@@ -1,13 +1,19 @@
 package br.com.development.spring.restwithspringboot.DTO;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.github.dozermapper.core.Mapping;
+import org.springframework.hateoas.ResourceSupport;
+
 import java.io.Serializable;
 import java.util.Objects;
 
-public class PersonDto implements Serializable {
+public class PersonDto extends ResourceSupport implements Serializable {
 
     private static final Long serialVersionUID = 1L;
 
-    private Long id;
+    @Mapping("id")
+    @JsonProperty("id")
+    private Long key;
     private String firstName;
     private String lastName;
     private String address;
@@ -16,12 +22,12 @@ public class PersonDto implements Serializable {
     public PersonDto(){}
 
 
-    public Long getId() {
-        return id;
+    public Long getKey() {
+        return key;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setKey(Long key) {
+        this.key = key;
     }
 
     public String getFirstName() {
@@ -60,12 +66,13 @@ public class PersonDto implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof PersonDto)) return false;
+        if (!super.equals(o)) return false;
         PersonDto personDto = (PersonDto) o;
-        return Objects.equals(id, personDto.id) && Objects.equals(firstName, personDto.firstName) && Objects.equals(lastName, personDto.lastName) && Objects.equals(address, personDto.address) && Objects.equals(gender, personDto.gender);
+        return Objects.equals(key, personDto.key) && Objects.equals(firstName, personDto.firstName) && Objects.equals(lastName, personDto.lastName) && Objects.equals(address, personDto.address) && Objects.equals(gender, personDto.gender);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, address, gender);
+        return Objects.hash(super.hashCode(), key, firstName, lastName, address, gender);
     }
 }

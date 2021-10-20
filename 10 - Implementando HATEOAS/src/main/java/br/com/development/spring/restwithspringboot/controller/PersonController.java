@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
 @RestController
 @RequestMapping("/person")
 public class PersonController {
@@ -17,8 +20,11 @@ public class PersonController {
     PersonServices personServices;
 
     @PostMapping
-    public PersonDto person(@RequestBody PersonDto personDto){
-        return personServices.create(personDto);
+    public PersonDto create(@RequestBody PersonDto personDto){
+
+        PersonDto person = personServices.create(personDto);
+        personDto.add(linkTo(methodOn(PersonController.class).findById(person.getKey())).withSelfRel());
+        return personDto;
     }
 
     @PostMapping("/v2")
@@ -28,17 +34,28 @@ public class PersonController {
 
     @GetMapping
     public List<PersonDto> findByAll(){
-        return personServices.findByAll();
+
+        List<PersonDto> person = personServices.findByAll();
+
+        person
+                .stream()
+                .forEach( p -> p.add(
+                                linkTo(methodOn(PersonController.class).findById(p.getKey())).withSelfRel()));
+        return person;
     }
 
     @GetMapping("/{id}")
     public PersonDto findById(@PathVariable("id") Long id){
-        return personServices.findById(id);
+        PersonDto personDto = personServices.findById(id);
+        personDto.add(linkTo(methodOn(PersonController.class).findById(id)).withSelfRel());
+        return personDto;
     }
 
     @PutMapping
     public PersonDto update(@RequestBody PersonDto personDto){
-        return personServices.update(personDto);
+        PersonDto person = personServices.update(personDto);
+        personDto.add(linkTo(methodOn(PersonController.class).findById(person.getKey())).withSelfRel());
+        return personDto;
     }
 
     @DeleteMapping("/{id}")
