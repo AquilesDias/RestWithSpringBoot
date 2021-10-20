@@ -1,31 +1,40 @@
-package br.com.development.spring.restwithspringboot.DTO;
+package br.com.development.spring.restwithspringboot.model;
 
-import com.github.dozermapper.core.Mapping;
-import org.springframework.hateoas.ResourceSupport;
-
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class PersonDto extends ResourceSupport implements Serializable {
+@Table(name = "person")
+@Entity
+public class Person implements Serializable {
 
     private static final Long serialVersionUID = 1L;
 
-    @Mapping("id")
-    private Long key;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "first_name", nullable = false, length = 15)
     private String firstName;
+
+    @Column(name = "last_name", nullable = false, length = 15)
     private String lastName;
+
+    @Column(nullable = false, length = 25)
     private String address;
+
+    @Column(nullable = false, length = 6)
     private String gender;
 
-    public PersonDto(){}
+    public Person(){}
 
 
-    public Long getKey() {
-        return key;
+    public Long getId() {
+        return id;
     }
 
-    public void setKey(Long key) {
-        this.key = key;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -63,13 +72,13 @@ public class PersonDto extends ResourceSupport implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof PersonDto)) return false;
-        PersonDto personDto = (PersonDto) o;
-        return Objects.equals(key, personDto.key) && Objects.equals(firstName, personDto.firstName) && Objects.equals(lastName, personDto.lastName) && Objects.equals(address, personDto.address) && Objects.equals(gender, personDto.gender);
+        if (!(o instanceof Person)) return false;
+        Person person = (Person) o;
+        return id.equals(person.id) && firstName.equals(person.firstName) && lastName.equals(person.lastName) && address.equals(person.address) && gender.equals(person.gender);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(key, firstName, lastName, address, gender);
+        return Objects.hash(id, firstName, lastName, address, gender);
     }
 }

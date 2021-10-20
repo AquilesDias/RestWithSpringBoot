@@ -1,31 +1,29 @@
-package br.com.development.spring.restwithspringboot.DTO;
-
-import com.github.dozermapper.core.Mapping;
-import org.springframework.hateoas.ResourceSupport;
+package br.com.development.spring.restwithspringboot.DTOV2;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 
-public class PersonDto extends ResourceSupport implements Serializable {
+public class PersonDtoV2 implements Serializable {
 
     private static final Long serialVersionUID = 1L;
 
-    @Mapping("id")
-    private Long key;
+    private Long id;
     private String firstName;
     private String lastName;
     private String address;
     private String gender;
+    private Date birthDay;
 
-    public PersonDto(){}
+    public PersonDtoV2(){}
 
 
-    public Long getKey() {
-        return key;
+    public Long getId() {
+        return id;
     }
 
-    public void setKey(Long key) {
-        this.key = key;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -60,16 +58,24 @@ public class PersonDto extends ResourceSupport implements Serializable {
         this.gender = gender;
     }
 
+    public Date getBirthDay() {
+        return birthDay;
+    }
+
+    public void setBirthDay(Date birthDay) {
+        this.birthDay = birthDay;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof PersonDto)) return false;
-        PersonDto personDto = (PersonDto) o;
-        return Objects.equals(key, personDto.key) && Objects.equals(firstName, personDto.firstName) && Objects.equals(lastName, personDto.lastName) && Objects.equals(address, personDto.address) && Objects.equals(gender, personDto.gender);
+        if (!(o instanceof PersonDtoV2)) return false;
+        PersonDtoV2 that = (PersonDtoV2) o;
+        return id.equals(that.id) && firstName.equals(that.firstName) && lastName.equals(that.lastName) && address.equals(that.address) && gender.equals(that.gender) && birthDay.equals(that.birthDay);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(key, firstName, lastName, address, gender);
+        return Objects.hash(id, firstName, lastName, address, gender, birthDay);
     }
 }
